@@ -1,0 +1,6 @@
+Preprocessing! 
+There's a ton of data! What features are most important? 
+
+Today's game plan:
+    1. Aggregate the csv files from train into a single dataframe, 
+        but, only use n rows.   
