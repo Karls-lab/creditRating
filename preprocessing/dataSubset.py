@@ -6,48 +6,59 @@ import numpy as np
 class dataSetSet():
     def __init__(self):
         self.filePath = os.path.dirname(__file__)
-        self.dataFolder = os.path.join(self.filePath, '..', 'data')
-        self.saveFolder = os.path.join(self.dataFolder, 'subset')
+        self.dataFolder = os.path.join(os.path.dirname(self.filePath), 'data')
+        self.subsetFolder = os.path.join(self.dataFolder, 'subset')
+        self.mergedFolder = os.path.join(self.dataFolder, 'mergedDatasets')
         self.creditFolder = "home-credit-credit-risk-model-stability"
 
     def getTrainData(self):
         return os.path.join(self.dataFolder, self.creditFolder, 'csv_files', 'train')
 
+
     """
-    Opens the dataframe, and takes a random number of rows 
+    Opens the dataframe, and takes a number of rows denoted 'n'
     and saves it to a new file in the subset folder.
     filename is train_base.csv, train_applprev_1_0.csv, ...
     SAMPLE: dataSubset(n=100, filename='train_base.csv', random_state=42)
     """
-    def dataSubset(self, n, filename, random_state=42):
+    def dataSubset(self, n, filename):
+        if os.path.exists(os.path.join(self.subsetFolder, filename)):
+            print(f'{filename} already exists in subset folder')
+            return
+        print(f'Creating subset of {filename} with {n} rows')
         df = pd.read_csv(os.path.join(self.getTrainData(), filename))
-        df = df.sample(n=n, random_state=random_state)
-        if not os.path.exists(self.saveFolder):
-            os.makedirs(self.saveFolder)
-        df.to_csv(os.path.join(self.saveFolder, filename), index=False)
+        # df = df.sample(n=n, random_state=random_state)
+        df = df[0:n]
+        if not os.path.exists(self.subsetFolder):
+            os.makedirs(self.subsetFolder)
+        df.to_csv(os.path.join(self.subsetFolder, filename), index=False)
+
 
     """
     Opens two files in subset folder, and merges the data frames 
     on the primary key of 'case_id' 
     """
-    def joinDataSubsets(self, **csvFiles):
+    def joinDataSubsets(self, saveFileName, *csvFiles):
         # Join the data subsets into one file
         # First, get the train_base.csv file
-        train_basePath = os.path.join(self.saveFolder, 'train_base.csv')
+        train_basePath = os.path.join(self.subsetFolder, 'train_base.csv')
         if not os.path.exists(train_basePath):
             print('train_base.csv does not exist in subset folder')
             print('Creating one automatically...')
-            self.dataSubset(n=100, filename='train_base.csv', random_state=42)
+            self.dataSubset(n=100, filename='train_base.csv')
 
         # Now for each file, merge it with the train_base.csv file
         train_base_df = pd.read_csv(train_basePath)
-        for key, value in csvFiles.items():
-            if not os.path.exists(os.path.join(self.saveFolder, value)):
-                print(f'{value} does not exist in subset folder')
-                print('Creating one automatically...')
-                self.dataSubset(n=100, filename=value, random_state=42)
-            df = pd.read_csv(os.path.join(self.saveFolder, value))
-            train_base_df = train_base_df.merge(df, on='case_id')
+        resultDf = train_base_df
+        for filename in csvFiles:
+            df = pd.read_csv(os.path.join(self.subsetFolder, filename))
+            resultDf = resultDf.merge(df, on='case_id')
+            print(f'\nMerged DF: {resultDf.head()}')
+
+        # Save the merged dataframe to the mergedDatasets folder
+        if not os.path.exists(self.mergedFolder):
+            os.makedirs(self.mergedFolder)
+        resultDf.to_csv(os.path.join(self.mergedFolder, saveFileName), index=False)
 
 
 dataTrainNames = {
@@ -62,13 +73,25 @@ dataTrainNames = {
     'bureau12': 'train_bureau_a_2_8.csv', 'bureau13': 'train_bureau_a_2_9.csv',
     'bureau14': 'train_bureau_a_2_10.csv','bureau15': 'train_bureau_b_1.csv', 
     'bureau16': 'train_bureau_b_2.csv',
-    'debit': 'train_debitcard', 
-
-
-
+    'debit': 'train_debitcard_1.csv', 
+    'deposit': 'train_deposit_1.csv', 
+    'other': 'train_other_1.csv',
+    'person': 'train_person_1.csv',
+    'static0': 'train_static_0_0.csv', 'static1': 'train_static_0_1.csv',
+    'static3': 'train_static_cb_0.csv',
+    'tax0': 'train_tax_registry_a_1.csv', 'tax1': 'train_tax_registry_b_1.csv',
+    'tax2': 'train_tax_registry_c_1.csv'
     }
+
+"""TODO: Train base has case IDs, so filter merged df to only match the ones with case IDs
+        in the train base file. """
 Dss = dataSetSet()
-Dss.joinDataSubsets(dataTrainNames)
+Dss.dataSubset(n=100, filename=dataTrainNames['person'])
+Dss.dataSubset(n=100, filename=dataTrainNames['aplprev0'])
+
+Dss.joinDataSubsets(
+   'person&Applprev.csv', dataTrainNames['person'], dataTrainNames['aplprev0']
+)
 
 
 
