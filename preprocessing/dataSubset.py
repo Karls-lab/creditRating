@@ -61,6 +61,7 @@ class dataSetSet():
         resultDf.to_csv(os.path.join(self.mergedFolder, saveFileName), index=False)
 
 
+""" Directory of the training data files. """
 dataTrainNames = {
     'aplprev0': 'train_applprev_1_0.csv', 'aplprev1': 'train_applprev_1_1.csv',
     'aplprev2': 'train_applprev_2.csv',
@@ -83,8 +84,8 @@ dataTrainNames = {
     'tax2': 'train_tax_registry_c_1.csv'
     }
 
-"""TODO: Train base has case IDs, so filter merged df to only match the ones with case IDs
-        in the train base file. """
+
+""" This is the Main function, please tell me if this doesn't work!"""
 Dss = dataSetSet()
 Dss.dataSubset(n=100, filename=dataTrainNames['person'])
 Dss.dataSubset(n=100, filename=dataTrainNames['aplprev0'])
