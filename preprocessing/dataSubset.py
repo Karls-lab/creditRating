@@ -14,6 +14,15 @@ class dataSetSet():
         self.subsetFolder = os.path.join(self.dataFolder, 'subset')
         self.mergedFolder = os.path.join(self.dataFolder, 'mergedDatasets')
         self.creditFolder = "home-credit-credit-risk-model-stability"
+        self.createSubFolders()
+
+    def createSubFolders(self):
+        if not os.path.exists(self.subsetFolder):
+            print(f'Creating subset folder at {self.subsetFolder}')
+            os.makedirs(self.subsetFolder)
+        if not os.path.exists(self.mergedFolder):
+            print(f'Creating mergedDatasets folder at {self.mergedFolder}')
+            os.makedirs(self.mergedFolder)
 
     def getTrainData(self):
         return os.path.join(self.dataFolder, self.creditFolder, 'csv_files', 'train')
@@ -33,8 +42,6 @@ class dataSetSet():
         df = pd.read_csv(os.path.join(self.getTrainData(), filename))
         # df = df.sample(n=n, random_state=random_state)
         df = df[0:n]
-        if not os.path.exists(self.subsetFolder):
-            os.makedirs(self.subsetFolder)
         df.to_csv(os.path.join(self.subsetFolder, filename), index=False)
 
 
@@ -60,8 +67,6 @@ class dataSetSet():
             print(f'\nMerged DF: {resultDf.head()}')
 
         # Save the merged dataframe to the mergedDatasets folder
-        if not os.path.exists(self.mergedFolder):
-            os.makedirs(self.mergedFolder)
         resultDf.to_csv(os.path.join(self.mergedFolder, saveFileName), index=False)
 
 
