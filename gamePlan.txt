@@ -1,6 +1,26 @@
 Preprocessing! 
 There's a ton of data! What features are most important? 
 
-Today's game plan:
-    1. Aggregate the csv files from train into a single dataframe, 
-        but, only use n rows.   
+TODO LIST: 
+    - Select some features, and apply some preprocessing to them.
+
+    - Create a preprocessing python script for each feature 
+
+    - For each feature, explain what that feature is, and why it's important.
+
+
+
+MODEL THINGS:
+    - 'Minimum redundancy maximum relevance' (mRMR) to select the most important features.
+    - l2 regularization to prevent overfitting.
+    - k-fold cross validation to test the model.
+    - Grid search to find the best hyperparameters.
+    - Learning Rate decay function 
+    - Early stopping to prevent overfitting.
+    - Dropout to prevent overfitting.
+    - Batch normalization to prevent overfitting.
+
+Questions:
+    - Data augmentation?
+    - Predefined Model (Xception)
+    - RNN? 
