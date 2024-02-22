@@ -3,6 +3,10 @@ import pandas as pd
 import numpy as np
 
 
+""" Takes a number of datasets, and merges them int one dataset. 
+    It also specifies the number of rows the dataset should have.
+    This is part of our data exploration process.
+"""
 class dataSetSet():
     def __init__(self):
         self.filePath = os.path.dirname(__file__)
