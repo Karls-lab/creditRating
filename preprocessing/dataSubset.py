@@ -34,7 +34,7 @@ class dataSetSet():
     filename is train_base.csv, train_applprev_1_0.csv, ...
     SAMPLE: dataSubset(n=100, filename='train_base.csv', random_state=42)
     """
-    def dataSubset(self, n, filename):
+    def createDataSubset(self, n, filename):
         if os.path.exists(os.path.join(self.subsetFolder, filename)):
             print(f'{filename} already exists in subset folder')
             return
@@ -56,7 +56,7 @@ class dataSetSet():
         if not os.path.exists(train_basePath):
             print('train_base.csv does not exist in subset folder')
             print('Creating one automatically...')
-            self.dataSubset(n=100, filename='train_base.csv')
+            self.createDataSubset(n=100, filename='train_base.csv')
 
         # Now for each file, merge it with the train_base.csv file
         train_base_df = pd.read_csv(train_basePath)
@@ -96,8 +96,8 @@ dataTrainNames = {
 
 """ This is the Main function, please tell me if this doesn't work!"""
 Dss = dataSetSet()
-Dss.dataSubset(n=100, filename=dataTrainNames['person'])
-Dss.dataSubset(n=100, filename=dataTrainNames['aplprev0'])
+Dss.createDataSubset(n=100, filename=dataTrainNames['person'])
+Dss.createDataSubset(n=100, filename=dataTrainNames['aplprev0'])
 
 Dss.joinDataSubsets(
    'person&Applprev.csv', dataTrainNames['person'], dataTrainNames['aplprev0']
