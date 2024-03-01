@@ -1,0 +1,13 @@
+I'm working with two merged datasets: appleprev and person. 
+I attempted to find all categorical values and one-hot encode them. 
+I then ran the dataset through the mrmr algorithm to attempt to find the 
+most relevant features.
+
+TODO: determine if any of these values are ordinal 
+(to use label encoding instead of one-hot encoding that reduces dimensionality)
+Promising Features, for more in-depth analysis, taken from preprocessing/docs/MRMR_pApplindex:
+- annuity 
+- creationdate 
+- district 
+- firstnonzeroinstldate
+- occupation
