@@ -7,6 +7,15 @@ TODO LIST:
     - Create a preprocessing python script for each feature 
 
     - For each feature, explain what that feature is, and why it's important.
+    
+
+
+DATA INSIGHTS:
+    Some rows have 'depth level' so people have past applications. 
+    When we merge this without accounting for this, it may cause issues such 
+    as duplicate rows.
+
+    
 
 
 
