@@ -25,9 +25,8 @@ TODO: determine if any of these values are ordinal
 (to use label encoding instead of one-hot encoding that reduces dimensionality)
 Promising Features, for more in-depth analysis, taken from preprocessing/docs/MRMR_pApplindex:
 
-- annuity: an annuity typically refers to a series of equal payments made at regular intervals.
-- creationdate: the date the application was created - don't know how to work with dates yet. 
-- district: the district of the applicant
-- firstnonzeroinstldate: First Non-Zero Installment Date: Date when they started paying
-    May remove because I don't know how to work with dates Yet. One-hot encode doesn't make sense
-- occupation: Job occupation. 
+- annuity_853A: CONTINOUS, an annuity typically refers to a series of equal payments made at regular intervals.
+- district_544M: the district of the applicant. Categorical feature
+- mainoccupationinc_437A: Job occupation. Categorical feature
+- credamount_590A: credit amount. CONTINUOUS
+- cancelreason_3545846M: reason for cancellation. Categorical feature
