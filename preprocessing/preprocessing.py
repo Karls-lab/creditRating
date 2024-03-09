@@ -23,7 +23,6 @@ def printNullValues(df, fileName):
 """ For each categorical feature, we encode it into a unique numerical value (0, 1, 2, 3, 4, 5)
     one number for each category. Then, scale the values to be between 0 and 1. (0, .25, .5, .75, 1)"""
 def labelEncodeCategorical(df, categoricalFeatures):
-    # TODO filter numerous bad values
     for feature in categoricalFeatures:
         df = df[df[feature] != '?']
     label_encoder = LabelEncoder()
@@ -48,6 +47,12 @@ def printMRMRValues(df, fileName):
     df.to_csv(os.path.join(docsPath, fileName), index=False)
 
 
+def normalizeColumns(df, columns):
+    for column in columns:
+        df[column] = (df[column] - df[column].mean()) / df[column].std()
+    return df
+
+
 
 df = pd.read_csv(dataSetPath)
 categoricalVariables = pd.read_csv(os.path.join(rootPath, 'preprocessing', 
@@ -56,14 +61,28 @@ catVarsSeries = categoricalVariables['categoricalVariables']
 
 """ LIST OF FEATURES TO THROW AWAY"""
 # one-hot encode the categorical variables
-df = pd.get_dummies(df, columns=catVarsSeries)
-df = df.drop(columns=['date_decision', 'birth_259D', 'birthdate_87D'])
+df = df.drop(columns=['date_decision', 'birth_259D', 'birthdate_87D', 'creationdate_885D',
+                      'approvaldate_319D', 'dateactivated_425D', 'creationdate_885D',
+                      'MONTH', 'WEEK_NUM', 'firstnonzeroinstldate_307D'])
 
-# for values in catVarsSeries: if a value isn't numeric, print the column name
+# Investigate Different features
+# print(df.info())
+# print(df['credamount_590A'].value_counts())
+
+# Start with 5 features, 3 categorical, 2 continuous
+df = df[['target', 'annuity_853A', 'district_544M', 'mainoccupationinc_437A',
+        'credamount_590A', 'cancelreason_3545846M']]
+# one-hot encode the categorical variables
+df = pd.get_dummies(df, columns=['district_544M', 'mainoccupationinc_437A', 'cancelreason_3545846M',])
+# standardize the continuous variables
+df = normalizeColumns(df, ['annuity_853A', 'credamount_590A'])
+# df[['annuity_853A', 'credamount_590A']].astype('float64')
+# fill null values with the mean of the column
+df = df.fillna(df.mean())
 print(df.info())
+df.to_csv(os.path.join(rootPath, 'data', 'processed', 'fiveFeatures.csv'), index=False)
 
-printMRMRValues(df, 'pApplIndex.csv')
 
-
+# printMRMRValues(df, 'pApplIndex.csv')
 # df = labelEncodeCategorical(df, catVarsSeries)
 # df.to_csv(os.path.join(rootPath, 'data', 'processed', 'pApplIndexTest.csv'), index=False)
