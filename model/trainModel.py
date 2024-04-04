@@ -15,7 +15,7 @@ def splitTrainingData(df, featureCols, targetCol, random=False):
 def main():
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     print(root)
-    df = pd.read_csv(os.path.join(root, 'data', 'processed', 'fiveFeatures.csv'))
+    df = pd.read_csv(os.path.join(root, 'data', 'processed', 'downsampled.csv'))
 
     columns = df.columns
     X_train, X_test, y_train, y_test = splitTrainingData(df, columns[1:], 'target')

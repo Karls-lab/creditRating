@@ -40,8 +40,8 @@ class dataSetSet():
             return
         print(f'Creating subset of {filename} with {n} rows')
         df = pd.read_csv(os.path.join(self.getTrainData(), filename))
-        # df = df.sample(n=n, random_state=random_state)
         df = df[0:n]
+        # filename = filename.split('.')[0] + f'_{n}.csv'
         df.to_csv(os.path.join(self.subsetFolder, filename), index=False)
 
 
@@ -50,13 +50,11 @@ class dataSetSet():
     on the primary key of 'case_id' 
     """
     def joinDataSubsets(self, saveFileName, *csvFiles):
-        # Join the data subsets into one file
-        # First, get the train_base.csv file
         train_basePath = os.path.join(self.subsetFolder, 'train_base.csv')
         if not os.path.exists(train_basePath):
             print('train_base.csv does not exist in subset folder')
             print('Creating one automatically...')
-            self.createDataSubset(n=100, filename='train_base.csv')
+            self.createDataSubset(n=500, filename='train_base.csv')
 
         # Now for each file, merge it with the train_base.csv file
         train_base_df = pd.read_csv(train_basePath)
@@ -92,12 +90,12 @@ dataTrainNames = {
     'tax0': 'train_tax_registry_a_1.csv', 'tax1': 'train_tax_registry_b_1.csv',
     'tax2': 'train_tax_registry_c_1.csv'
     }
-
+    
 
 """ This is the Main function, please tell me if this doesn't work!"""
 Dss = dataSetSet()
-Dss.createDataSubset(n=100, filename=dataTrainNames['person'])
-Dss.createDataSubset(n=100, filename=dataTrainNames['aplprev0'])
+Dss.createDataSubset(n=500, filename=dataTrainNames['person'])
+Dss.createDataSubset(n=500, filename=dataTrainNames['aplprev0'])
 
 Dss.joinDataSubsets(
    'person&Applprev.csv', dataTrainNames['person'], dataTrainNames['aplprev0']
