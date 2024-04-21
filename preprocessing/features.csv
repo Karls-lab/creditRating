@@ -1,0 +1,16 @@
+name,type,description
+district_544M,categorical
+mainoccupationinc_437A,categorical
+cancelreason_3545846M,categorical
+annuity_853A,numerical
+credamount_590A,numerical
+education_1138M,categorical
+housetype_905L,categorical
+language1_981M,categorical
+familystate_447L,categorical
+byoccupationinc_3656910L,numerical
+childnum_21L,categorical
+tenor_203L,numerical
+status_219L,categorical
+
+
