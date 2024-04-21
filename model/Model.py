@@ -11,7 +11,7 @@ from sklearn.metrics import recall_score
 import numpy as np
 
 
-class NLTK_Binary_Classifier(BaseEstimator, ClassifierMixin):
+class B3D3AD_Classifier(BaseEstimator, ClassifierMixin):
     def __init__(self):
         self.classes_ = np.array([0, 1])  
         self.model = Sequential([
@@ -19,6 +19,7 @@ class NLTK_Binary_Classifier(BaseEstimator, ClassifierMixin):
             self.DenseLayer(512, activation='relu'),
             self.DenseLayer(512, activation='relu'),
             self.DenseLayer(512, activation='relu'),
+            self.DropoutLayer(0.3),
             self.DenseLayer(1, activation='sigmoid'),
         ])
 
@@ -29,6 +30,10 @@ class NLTK_Binary_Classifier(BaseEstimator, ClassifierMixin):
             kernel_initializer=HeNormal(), bias_initializer=HeNormal(),
             kernel_regularizer=l2(0.01), bias_regularizer=l2(0.01)
         )
+
+    # Custom dropout layer
+    def DropoutLayer(self, rate):
+        return Dropout(rate)
 
     # Resets weights to HeNormal
     def reset_weights(self):

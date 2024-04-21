@@ -1,11 +1,10 @@
-from model import NLTK_Binary_Classifier
+from Model import B3D3AD_Classifier
 from sklearn.model_selection import train_test_split
 import os 
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import confusion_matrix
-from sklearn.model_selection import RandomizedSearchCV
 from sklearn.model_selection import StratifiedKFold
 import numpy as np
 
@@ -17,7 +16,6 @@ def splitTrainingData(df, featureCols, targetCol, random=False):
     y = df[targetCol]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=state)
     return X_train, X_test, y_train, y_test
-
 
 
 def main():
@@ -44,8 +42,8 @@ def main():
         X_train, X_test = X.iloc[train_index], X.iloc[test_index]
         y_train, y_test = y.iloc[train_index], y.iloc[test_index]
 
-        # Train the model
-        model = NLTK_Binary_Classifier()
+        # Train the model on a custom Model Class (NLTK_Binary_Classifier)
+        model = B3D3AD_Classifier()
         model.fit(X_train, y_train)  # Assuming your fit method works with your custom class
 
         # Evaluate the model
