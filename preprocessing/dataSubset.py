@@ -8,13 +8,14 @@ import numpy as np
     This is part of our data exploration process.
 """
 class dataSetSet():
-    def __init__(self):
+    def __init__(self, n=1000):
         self.filePath = os.path.dirname(__file__)
         self.dataFolder = os.path.join(os.path.dirname(self.filePath), 'data')
         self.subsetFolder = os.path.join(self.dataFolder, 'subset')
         self.mergedFolder = os.path.join(self.dataFolder, 'mergedDatasets')
         self.creditFolder = "home-credit-credit-risk-model-stability"
         self.createSubFolders()
+        self.n = n
 
     def createSubFolders(self):
         if not os.path.exists(self.subsetFolder):
@@ -34,14 +35,10 @@ class dataSetSet():
     filename is train_base.csv, train_applprev_1_0.csv, ...
     SAMPLE: dataSubset(n=100, filename='train_base.csv', random_state=42)
     """
-    def createDataSubset(self, n, filename):
-        if os.path.exists(os.path.join(self.subsetFolder, filename)):
-            print(f'{filename} already exists in subset folder')
-            return
-        print(f'Creating subset of {filename} with {n} rows')
+    def createDataSubset(self, filename):
+        print(f'Creating subset of {filename}')
         df = pd.read_csv(os.path.join(self.getTrainData(), filename))
-        # df = df.sample(n=n, random_state=random_state)
-        df = df[0:n]
+        df = df[0:self.n]
         df.to_csv(os.path.join(self.subsetFolder, filename), index=False)
 
 
@@ -50,13 +47,7 @@ class dataSetSet():
     on the primary key of 'case_id' 
     """
     def joinDataSubsets(self, saveFileName, *csvFiles):
-        # Join the data subsets into one file
-        # First, get the train_base.csv file
         train_basePath = os.path.join(self.subsetFolder, 'train_base.csv')
-        if not os.path.exists(train_basePath):
-            print('train_base.csv does not exist in subset folder')
-            print('Creating one automatically...')
-            self.createDataSubset(n=100, filename='train_base.csv')
 
         # Now for each file, merge it with the train_base.csv file
         train_base_df = pd.read_csv(train_basePath)
@@ -92,16 +83,20 @@ dataTrainNames = {
     'tax0': 'train_tax_registry_a_1.csv', 'tax1': 'train_tax_registry_b_1.csv',
     'tax2': 'train_tax_registry_c_1.csv'
     }
-
+    
 
 """ This is the Main function, please tell me if this doesn't work!"""
-Dss = dataSetSet()
-Dss.createDataSubset(n=100, filename=dataTrainNames['person'])
-Dss.createDataSubset(n=100, filename=dataTrainNames['aplprev0'])
+Dss = dataSetSet(n=100000)
+Dss.createDataSubset(filename='train_base.csv')
+Dss.createDataSubset(filename=dataTrainNames['person'])
+Dss.createDataSubset(filename=dataTrainNames['aplprev0'])
+# Dss.createDataSubset(filename=dataTrainNames['aplprev1'])
+# Dss.createDataSubset(filename=dataTrainNames['aplprev2'])
 
 Dss.joinDataSubsets(
-   'person&Applprev.csv', dataTrainNames['person'], dataTrainNames['aplprev0']
+   'person&ApplprevTrain.csv', dataTrainNames['person'], dataTrainNames['aplprev0']
 )
+
 
 
 
