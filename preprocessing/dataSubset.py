@@ -86,7 +86,7 @@ dataTrainNames = {
     
 
 """ This is the Main function, please tell me if this doesn't work!"""
-Dss = dataSetSet(n=50000)
+Dss = dataSetSet(n=100000)
 Dss.createDataSubset(filename='train_base.csv')
 Dss.createDataSubset(filename=dataTrainNames['person'])
 Dss.createDataSubset(filename=dataTrainNames['aplprev0'])
