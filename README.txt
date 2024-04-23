@@ -1,6 +1,12 @@
 HOW TO RUN:
+    NN:
     Run this command: python3 model/trainModel.py
+    
+    SVM:
+    Run this command: python3 model/SVM.py
 
+    Random Forest:
+    Run this command: python3 model/randomForest.py
 
 
 How Datasets are Preprocessed:
