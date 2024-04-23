@@ -7,6 +7,7 @@ import seaborn as sns
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import StratifiedKFold
 import numpy as np
+import time
 
 
 def splitTrainingData(df, featureCols, targetCol, random=False):
@@ -19,6 +20,8 @@ def splitTrainingData(df, featureCols, targetCol, random=False):
 
 
 def main():
+    start = time.time()
+
     # Load the data
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     file_path = os.path.join(root, 'data', 'processed', 'final.csv')
@@ -57,7 +60,10 @@ def main():
     print(f"Mean Accuracy: {mean_accuracy}")
     print(f"Mean recall: {np.mean(recalls)}")
 
-     # Display the Confusion Matrix
+    end = time.time()
+    print(f"Time taken: {end - start} seconds")
+
+    # Display the Confusion Matrix
     conf_matrix = confusion_matrix(y_train,  model.model.predict(X_train).round()) 
     plt.figure(figsize=(10, 6))
     sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues')
@@ -66,6 +72,7 @@ def main():
     plt.title('Confusion Matrix Loan Default Prediction (0-Non-Default, 1-Default)')
     plt.show()
     
+
 
 if __name__ == "__main__":
     main()
